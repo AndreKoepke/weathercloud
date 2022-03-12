@@ -1,16 +1,14 @@
-package ch.akop.weather.api.wind;
+package ch.akop.weathercloud.wind;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static ch.akop.weather.api.wind.WindSpeedUnit.METERS_PER_SECOND;
-
 
 public record Wind(BigDecimal baseValue) {
 
-    private static final WindSpeedUnit BASE_UNIT = METERS_PER_SECOND;
+    private static final WindSpeedUnit BASE_UNIT = WindSpeedUnit.METERS_PER_SECOND;
 
     @NotNull
     public static Wind fromUnit(@NotNull BigDecimal value, @NotNull WindSpeedUnit unit) {

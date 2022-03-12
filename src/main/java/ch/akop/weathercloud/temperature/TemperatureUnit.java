@@ -1,4 +1,4 @@
-package ch.akop.weather.api.temperature;
+package ch.akop.weathercloud.temperature;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import java.math.BigDecimal;
 import java.util.function.UnaryOperator;
 
-import static ch.akop.weather.api.temperature.ConversionUtil.*;
+import static ch.akop.weathercloud.temperature.ConversionUtil.*;
 
 @RequiredArgsConstructor
 public enum TemperatureUnit {

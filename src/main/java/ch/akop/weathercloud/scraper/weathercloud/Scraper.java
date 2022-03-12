@@ -1,12 +1,14 @@
-package ch.akop.weather.api.scraper.weathercloud;
+package ch.akop.weathercloud.scraper.weathercloud;
 
-import ch.akop.weather.api.Weather;
-import ch.akop.weather.api.light.Light;
-import ch.akop.weather.api.light.LightUnit;
-import ch.akop.weather.api.rain.Rain;
-import ch.akop.weather.api.rain.RainUnit;
-import ch.akop.weather.api.temperature.Temperature;
-import ch.akop.weather.api.wind.Wind;
+import ch.akop.weathercloud.Weather;
+import ch.akop.weathercloud.light.Light;
+import ch.akop.weathercloud.light.LightUnit;
+import ch.akop.weathercloud.rain.Rain;
+import ch.akop.weathercloud.rain.RainUnit;
+import ch.akop.weathercloud.temperature.Temperature;
+import ch.akop.weathercloud.temperature.TemperatureUnit;
+import ch.akop.weathercloud.wind.Wind;
+import ch.akop.weathercloud.wind.WindSpeedUnit;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,9 +22,6 @@ import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
-import static ch.akop.weather.api.temperature.TemperatureUnit.DEGREE;
-import static ch.akop.weather.api.wind.WindSpeedUnit.METERS_PER_SECOND;
 
 /**
  * Use this scraper to fetch data from Weathercloud.
@@ -58,8 +57,8 @@ public class Scraper {
 
         return new Weather()
                 .setRecordedAt(ZonedDateTime.ofInstant(Instant.ofEpochSecond(response.lastUpdate()), ZoneId.systemDefault()))
-                .setWind(Wind.fromUnit(response.wspdCurrent().value(), METERS_PER_SECOND))
-                .setOuterTemperatur(Temperature.fromUnit(response.tempCurrent().value(), DEGREE))
+                .setWind(Wind.fromUnit(response.wspdCurrent().value(), WindSpeedUnit.METERS_PER_SECOND))
+                .setOuterTemperatur(Temperature.fromUnit(response.tempCurrent().value(), TemperatureUnit.DEGREE))
                 .setLight(Light.fromUnit(response.solarradCurrent().value(), LightUnit.WATT_PER_SQUARE_METER))
                 .setRain(Rain.fromUnit(response.rainCurrent().value(), RainUnit.MILLIMETER_PER_HOUR));
     }

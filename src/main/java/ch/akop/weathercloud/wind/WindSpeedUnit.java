@@ -1,4 +1,4 @@
-package ch.akop.weather.api.wind;
+package ch.akop.weathercloud.wind;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

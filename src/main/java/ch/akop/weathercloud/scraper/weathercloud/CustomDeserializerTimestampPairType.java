@@ -1,4 +1,4 @@
-package ch.akop.weather.api.scraper.weathercloud;
+package ch.akop.weathercloud.scraper.weathercloud;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

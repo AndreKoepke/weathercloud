@@ -1,10 +1,9 @@
-package ch.akop.weather.api.temperature;
+package ch.akop.weathercloud.temperature;
 
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static ch.akop.weather.api.temperature.TemperatureUnit.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -17,7 +16,7 @@ class TemperatureTest {
         var expectedKelvin = BigDecimal.valueOf(296.85);
 
         // act
-        var result = Temperature.fromUnit(degree, DEGREE).getAs(KELVIN);
+        var result = Temperature.fromUnit(degree, TemperatureUnit.DEGREE).getAs(TemperatureUnit.KELVIN);
 
         // assert
         assertEquals(expectedKelvin.stripTrailingZeros(), result.stripTrailingZeros());
@@ -30,7 +29,7 @@ class TemperatureTest {
         var expectedFahrenheit = BigDecimal.valueOf(74.66);
 
         // act
-        var result = Temperature.fromUnit(degree, DEGREE).getAs(FAHRENHEIT);
+        var result = Temperature.fromUnit(degree, TemperatureUnit.DEGREE).getAs(TemperatureUnit.FAHRENHEIT);
 
         // assert
         assertEquals(expectedFahrenheit.stripTrailingZeros(), result.stripTrailingZeros());

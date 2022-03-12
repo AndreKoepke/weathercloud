@@ -1,8 +1,11 @@
-package ch.akop.weather.api.scraper.weathercloud;
+package ch.akop.weathercloud.scraper.weathercloud;
+
+import org.junit.jupiter.api.Test;
 
 class ScraperTest {
 
     // run manually
+    @Test
     void manual_test() {
         var testee = new Scraper();
 

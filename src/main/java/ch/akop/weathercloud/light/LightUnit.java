@@ -1,4 +1,4 @@
-package ch.akop.weather.api.light;
+package ch.akop.weathercloud.light;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

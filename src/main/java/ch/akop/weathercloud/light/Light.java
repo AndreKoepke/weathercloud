@@ -1,18 +1,16 @@
-package ch.akop.weather.api.light;
+package ch.akop.weathercloud.light;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static ch.akop.weather.api.light.LightUnit.WATT_PER_SQUARE_METER;
-
 /**
  * Represents light. Possible units are in {@link LightUnit}.
  */
 public record Light(BigDecimal baseValue) {
 
-    private static final LightUnit BASE_UNIT = WATT_PER_SQUARE_METER;
+    private static final LightUnit BASE_UNIT = LightUnit.WATT_PER_SQUARE_METER;
 
     @NotNull
     public static Light fromUnit(@NotNull BigDecimal value, @NotNull LightUnit unit) {

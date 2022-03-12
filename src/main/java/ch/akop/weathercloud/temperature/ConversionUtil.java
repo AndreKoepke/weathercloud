@@ -1,4 +1,4 @@
-package ch.akop.weather.api.temperature;
+package ch.akop.weathercloud.temperature;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

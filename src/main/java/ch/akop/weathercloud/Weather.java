@@ -1,9 +1,9 @@
-package ch.akop.weather.api;
+package ch.akop.weathercloud;
 
-import ch.akop.weather.api.light.Light;
-import ch.akop.weather.api.rain.Rain;
-import ch.akop.weather.api.temperature.Temperature;
-import ch.akop.weather.api.wind.Wind;
+import ch.akop.weathercloud.light.Light;
+import ch.akop.weathercloud.rain.Rain;
+import ch.akop.weathercloud.temperature.Temperature;
+import ch.akop.weathercloud.wind.Wind;
 import lombok.Data;
 
 import java.time.ZonedDateTime;

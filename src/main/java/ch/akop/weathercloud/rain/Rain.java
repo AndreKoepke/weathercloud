@@ -1,6 +1,6 @@
-package ch.akop.weather.api.rain;
+package ch.akop.weathercloud.rain;
 
-import ch.akop.weather.api.light.LightUnit;
+import ch.akop.weathercloud.light.LightUnit;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;

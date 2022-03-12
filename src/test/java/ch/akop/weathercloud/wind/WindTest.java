@@ -1,11 +1,11 @@
-package ch.akop.weather.api.wind;
+package ch.akop.weathercloud.wind;
 
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static ch.akop.weather.api.wind.WindSpeedUnit.KILOMETERS_PER_SECOND;
-import static ch.akop.weather.api.wind.WindSpeedUnit.METERS_PER_SECOND;
+import static ch.akop.weathercloud.wind.WindSpeedUnit.KILOMETERS_PER_SECOND;
+import static ch.akop.weathercloud.wind.WindSpeedUnit.METERS_PER_SECOND;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WindTest {

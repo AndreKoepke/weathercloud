@@ -1,4 +1,4 @@
-package ch.akop.weather.api.temperature;
+package ch.akop.weathercloud.temperature;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static ch.akop.weather.api.temperature.TemperatureUnit.DEGREE;
+import static ch.akop.weathercloud.temperature.TemperatureUnit.DEGREE;
 
 
 public record Temperature(@NotNull BigDecimal baseValue) {
