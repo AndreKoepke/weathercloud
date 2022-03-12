@@ -16,7 +16,7 @@ Small and simple. Just include the lib via Maven/Gradle
 ### gradle
 
 ```groovy
-implementation ch.akop: weathercloud : 0.0 .3 '
+implementation ch.akop:weathercloud:0.0.3 
 ```
 
 ## Usage
