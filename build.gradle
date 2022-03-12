@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'ch.akop.weather'
-version '0.0.1-SNAPSHOT'
+version '0.0.1'
 
 repositories {
     mavenCentral()
@@ -37,17 +37,11 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/akop/weathercloudScraper")
+            url = uri("https://maven.pkg.github.com/AndreKopeke/weathercloud")
             credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
             }
         }
     }
-    publications {
-        gpr(MavenPublication) {
-            from(components.java)
-        }
-    }
-
 }
