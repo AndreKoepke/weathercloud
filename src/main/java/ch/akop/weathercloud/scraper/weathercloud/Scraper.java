@@ -18,7 +18,6 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -33,7 +32,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Use this scraper to fetch data from Weathercloud.
  */
-@Slf4j
 public class Scraper {
 
     private static final String BASE_URL = "https://app.weathercloud.net/device/stats?code=";
@@ -84,7 +82,6 @@ public class Scraper {
         return Observable.interval(0, rate.toMillis(), TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .map(ignored -> this.scrape(deviceId))
-                .doOnNext(weather -> log.info("{}", weather))
                 .distinct(Weather::getRecordedAt)
                 .toFlowable(BackpressureStrategy.DROP);
     }
