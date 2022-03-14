@@ -1,33 +1,28 @@
 package ch.akop.weathercloud.temperature;
 
 
+import ch.akop.weathercloud.abstraction.ValueWithUnit;
+import ch.akop.weathercloud.rain.RainUnit;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import static ch.akop.weathercloud.temperature.TemperatureUnit.DEGREE;
 
-
-public record Temperature(@NotNull BigDecimal baseValue) {
-
+/**
+ * Represents light. Possible units are in {@link RainUnit}.
+ */
+public class Temperature extends ValueWithUnit<TemperatureUnit> {
 
     private static final TemperatureUnit BASE_UNIT = DEGREE;
 
+    private Temperature(BigDecimal valueAsBaseUnit) {
+        super(BASE_UNIT, valueAsBaseUnit);
+    }
+
     @NotNull
     public static Temperature fromUnit(@NotNull BigDecimal value, @NotNull TemperatureUnit unit) {
-        return new Temperature(unit.convertTo(value, unit, BASE_UNIT));
+        return new Temperature(unit.convertTo(value, BASE_UNIT));
     }
 
-    @NotNull
-    public BigDecimal getAs(@NotNull TemperatureUnit unit) {
-        return unit.convertTo(this.baseValue, BASE_UNIT, unit);
-    }
-
-    @Override
-    public String toString() {
-        return "%s %s".formatted(
-                this.baseValue.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros(),
-                BASE_UNIT.getTextSuffix());
-    }
 }

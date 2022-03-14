@@ -1,27 +1,24 @@
 package ch.akop.weathercloud.rain;
 
+import ch.akop.weathercloud.abstraction.ValueWithUnit;
 import ch.akop.weathercloud.light.LightUnit;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
  * Represents light. Possible units are in {@link LightUnit}.
  */
-public record Rain(BigDecimal baseValue) {
+public class Rain extends ValueWithUnit<RainUnit> {
 
     private static final RainUnit BASE_UNIT = RainUnit.MILLIMETER_PER_HOUR;
 
-    @NotNull
-    public static Rain fromUnit(@NotNull BigDecimal value, @NotNull RainUnit unit) {
-        return new Rain(unit.convertTo(value, unit, BASE_UNIT));
+    private Rain(BigDecimal valueInBaseUnit) {
+        super(BASE_UNIT, valueInBaseUnit);
     }
 
-    @Override
-    public String toString() {
-        return "%s %s".formatted(
-                this.baseValue.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros(),
-                BASE_UNIT.getTextSuffix());
+    @NotNull
+    public static Rain fromUnit(@NotNull BigDecimal value, @NotNull RainUnit unit) {
+        return new Rain(unit.convertTo(value, BASE_UNIT));
     }
 }
