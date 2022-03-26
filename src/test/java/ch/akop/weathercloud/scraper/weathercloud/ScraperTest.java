@@ -24,10 +24,10 @@ class ScraperTest {
     void manual_scheduler_test() throws InterruptedException {
         var testee = new Scraper();
 
-        testee.scrape$("7003523537", Duration.of(5, ChronoUnit.MINUTES))
+        testee.scrape$("7003523537", Duration.of(15, ChronoUnit.SECONDS))
                 .subscribe(weather -> log.info("In Oensingen, we had {}", weather.getOuterTemperatur()));
 
-        Thread.sleep(60000);
+        Thread.sleep(600000);
     }
 
 }

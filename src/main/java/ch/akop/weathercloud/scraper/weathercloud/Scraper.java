@@ -19,7 +19,9 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.SneakyThrows;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -28,6 +30,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Use this scraper to fetch data from Weathercloud.
@@ -52,14 +55,7 @@ public class Scraper {
      */
     @SneakyThrows
     public Weather scrape(String deviceId) {
-        final var request = HttpRequest.newBuilder()
-                .GET()
-                .uri(new URI(BASE_URL + deviceId))
-                .header("X-Requested-With", "XMLHttpRequest")
-                .timeout(Duration.ofSeconds(30))
-                .build();
-
-        var strResponse = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        String strResponse = getResponseFromWeatherCloud(deviceId);
         var response = Scraper.mapper.readValue(strResponse, Response.class);
 
         return new Weather()
@@ -70,6 +66,39 @@ public class Scraper {
                 .setRain(Rain.fromUnit(response.rainCurrent().value(), RainUnit.MILLIMETER_PER_HOUR));
     }
 
+    @SneakyThrows
+    private String getResponseFromWeatherCloud(String deviceId) {
+
+        final var delayOnException = Duration.ofSeconds(10);
+        int retryCounter = 0;
+        Exception lastException;
+
+        do {
+            try {
+                return doRequestAndGetBody(deviceId);
+            } catch (InterruptedException e) {
+                // abort on interruption
+                throw e;
+            } catch (Exception e) {
+                // retry with an increasing backoff
+                Thread.sleep(delayOnException.toMillis() * ++retryCounter);
+                lastException = e;
+            }
+        } while (retryCounter < 10);
+
+        throw new RuntimeException("Can't talk to weatherCloud even after %d retries.".formatted(retryCounter), lastException);
+    }
+
+    private String doRequestAndGetBody(String deviceId) throws URISyntaxException, IOException, InterruptedException {
+        final var request = HttpRequest.newBuilder()
+                .GET()
+                .uri(new URI(BASE_URL + deviceId))
+                .header("X-Requested-With", "XMLHttpRequest")
+                .timeout(Duration.ofSeconds(10))
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+    }
 
     /**
      * Pull weather-data at a constant rate. It will fetch the first dataset immediately.
@@ -79,9 +108,17 @@ public class Scraper {
      * @return A flowable, which will emit on each new value (same values will not be emitted twice)
      */
     public Flowable<Weather> scrape$(String deviceId, Duration rate) {
-        return Observable.interval(0, rate.toMillis(), TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .map(ignored -> this.scrape(deviceId))
+        // because of backoff-logic, we need to prevent that the timer-emits will stack up
+        AtomicBoolean isWorking = new AtomicBoolean(false);
+        return Observable.interval(0, rate.toMillis(), TimeUnit.MILLISECONDS, Schedulers.io())
+                .filter(aLong -> !isWorking.get())
+                .flatMap(ignored -> {
+                    isWorking.set(true);
+
+                    return Observable.fromSupplier(() -> this.scrape(deviceId))
+                            .doOnComplete(() -> isWorking.set(false))
+                            .subscribeOn(Schedulers.computation());
+                })
                 .distinct(Weather::getRecordedAt)
                 .toFlowable(BackpressureStrategy.DROP);
     }
