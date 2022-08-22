@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  */
 public class Light extends ValueWithUnit<LightUnit> {
 
-    private static final LightUnit BASE_UNIT = LightUnit.WATT_PER_SQUARE_METER;
+    private static final LightUnit BASE_UNIT = LightUnit.KILO_LUX;
 
     public Light(BigDecimal valueAsBaseUnit) {
         super(BASE_UNIT, valueAsBaseUnit);

@@ -46,7 +46,7 @@ public class Scraper {
 
 
     /**
-     * Fetch all data of a specific device. You can discover devices on this site https://app.weathercloud.net.
+     * Fetch all data of a specific device. You can discover devices on <a href="https://app.weathercloud.net">this site</a>.
      * <p>
      * Each device has an ID, you can see it, when you open the device in a webbrowser and copy the id from the url.
      *
@@ -62,7 +62,7 @@ public class Scraper {
                 .setRecordedAt(ZonedDateTime.ofInstant(Instant.ofEpochSecond(response.lastUpdate()), ZoneId.systemDefault()))
                 .setWind(Wind.fromUnit(response.wspdCurrent().value(), WindSpeedUnit.METERS_PER_SECOND))
                 .setOuterTemperatur(Temperature.fromUnit(response.tempCurrent().value(), TemperatureUnit.DEGREE))
-                .setLight(Light.fromUnit(response.solarradCurrent().value(), LightUnit.WATT_PER_SQUARE_METER))
+                .setLight(Light.fromUnit(response.solarradCurrent().value(), LightUnit.KILO_LUX))
                 .setRain(Rain.fromUnit(response.rainCurrent().value(), RainUnit.MILLIMETER_PER_HOUR));
     }
 

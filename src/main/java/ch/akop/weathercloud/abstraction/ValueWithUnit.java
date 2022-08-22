@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+@SuppressWarnings("unused")
 @EqualsAndHashCode
 public class ValueWithUnit<T extends Unit> {
 
@@ -42,8 +43,15 @@ public class ValueWithUnit<T extends Unit> {
         return compareTo(value, unit) > 0;
     }
 
+    public boolean isBiggerThan(int value, Unit unit) {
+        return isBiggerThan(BigDecimal.valueOf(value), unit);
+    }
+
     public boolean isSmallerThan(BigDecimal value, Unit unit) {
         return compareTo(value, unit) < 0;
     }
 
+    public boolean isSmallerThan(double value, Unit unit) {
+        return isSmallerThan(BigDecimal.valueOf(value), unit);
+    }
 }

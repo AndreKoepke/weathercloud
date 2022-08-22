@@ -11,7 +11,7 @@ import java.util.function.UnaryOperator;
 @Getter
 public enum LightUnit implements Unit {
 
-    WATT_PER_SQUARE_METER("W/m²", value -> value, value -> value);
+    KILO_LUX("kLux", value -> value, value -> value);
 
     private final String textSuffix;
     private final UnaryOperator<BigDecimal> fromDefault;
