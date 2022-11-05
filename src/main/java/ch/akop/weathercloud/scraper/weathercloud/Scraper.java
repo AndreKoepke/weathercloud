@@ -63,7 +63,7 @@ public class Scraper {
                 .setWind(Wind.fromUnit(response.wspdCurrent().value(), WindSpeedUnit.METERS_PER_SECOND))
                 .setOuterTemperatur(Temperature.fromUnit(response.tempCurrent().value(), TemperatureUnit.DEGREE))
                 .setLight(Light.fromUnit(response.solarradCurrent().value(), LightUnit.KILO_LUX))
-                .setRain(Rain.fromUnit(response.rainCurrent().value(), RainUnit.MILLIMETER_PER_HOUR));
+                .setRain(Rain.fromUnit(response.rainrateCurrent().value(), RainUnit.MILLIMETER_PER_HOUR));
     }
 
     @SneakyThrows
