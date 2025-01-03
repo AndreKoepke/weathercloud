@@ -1,18 +1,28 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'org.jreleaser' version '1.16.0'
+    id 'signing'
 }
 
-group = 'ch.akop'
+group = 'io.github.andrekoepke'
 version = '0.1.1'
 
 java {
-    sourceCompatibility = 17
-    targetCompatibility = 17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
     mavenCentral()
+}
+
+clean {
+    doLast {
+        mkdir "$buildDir/jreleaser"
+    }
 }
 
 dependencies {
@@ -22,10 +32,10 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.13.2'
     implementation 'org.jetbrains:annotations:23.0.0'
 
-    compileOnly 'org.projectlombok:lombok:1.18.22'
-    annotationProcessor 'org.projectlombok:lombok:1.18.22'
-    testCompileOnly 'org.projectlombok:lombok:1.18.22'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+    testCompileOnly 'org.projectlombok:lombok:1.18.36'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
@@ -40,19 +50,59 @@ test {
 }
 
 publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/AndreKoepke/weathercloud")
-            credentials {
-                username = System.getenv("USERNAME")
-                password = System.getenv("TOKEN")
+    publications {
+        maven(MavenPublication) {
+            groupId = 'io.github.andrekoepke'
+            artifactId = 'weathercloud'
+
+            from components.java
+
+            pom {
+                name = 'weahtercloud'
+                description = 'Pulls data from Weathercloud'
+                url = 'https://github.com/AndreKoepke/weathercloud'
+                inceptionYear = '2021'
+                licenses {
+                    license {
+                        name = 'Apache-2.0'
+                        url = 'https://spdx.org/licenses/Apache-2.0.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'AndreKoepke'
+                        name = 'Andre Köpke'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/aalmiray/app.git'
+                    developerConnection = 'scm:git:ssh://github.com/AndreKoepke/weathercloud.git'
+                    url = 'https://github.com/AndreKoepke/weathercloud'
+                }
             }
         }
     }
-    publications {
-        gpr(MavenPublication) {
-            from(components.java)
+    repositories {
+        maven {
+            url = layout.buildDirectory.dir('staging-deploy')
+        }
+    }
+}
+
+jreleaser {
+    signing {
+        active = 'ALWAYS'
+        armored = true
+    }
+    deploy {
+        maven {
+            mavenCentral {
+                sonatype {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    stagingRepository('build/staging-deploy')
+                }
+            }
         }
     }
 }

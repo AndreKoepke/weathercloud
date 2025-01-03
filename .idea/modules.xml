@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/weathercloud-scraper.test.iml" filepath="$PROJECT_DIR$/.idea/modules/weathercloud-scraper.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/weathercloud.main.iml" filepath="$PROJECT_DIR$/.idea/modules/weathercloud.main.iml" />
     </modules>
   </component>
 </project>

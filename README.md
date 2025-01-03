@@ -1,3 +1,6 @@
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.andrekoepke/weathercloud/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/io.github.andrekoepke/weathercloud)
+
 # Java-Library to fetch Weathercloud.net data
 
 Small and simple. Just include the lib via Maven/Gradle 
@@ -8,16 +11,16 @@ Small and simple. Just include the lib via Maven/Gradle
 ```xml
 
 <dependency>
-    <groupId>ch.akop</groupId>
+    <groupId>io.github.andrekoepke</groupId>
     <artifactId>weathercloud</artifactId>
-    <version>0.0.4</version>
+    <version>0.1.1</version>
 </dependency> 
 ```
 
 ### gradle
 
 ```groovy
-implementation 'ch.akop:weathercloud:0.0.4' 
+implementation 'io.github.andrekoepke:weathercloud:0.1.1' 
 ```
 
 ## Usage
