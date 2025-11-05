@@ -18,6 +18,7 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URI;
@@ -30,11 +31,11 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Use this scraper to fetch data from Weathercloud.
  */
+@Slf4j
 public class Scraper {
 
     private static final String BASE_URL = "https://app.weathercloud.net/device/stats?code=";
@@ -102,24 +103,19 @@ public class Scraper {
 
     /**
      * Pull weather-data at a constant rate. It will fetch the first dataset immediately.
+     * On an exception, the Observable will be stopped. The caller needs a logic to recover from a bad state.
      *
      * @param deviceId numeric deviceId, like 1234567890
      * @param rate     Duration, how often data should be fetched.
      * @return A flowable, which will emit on each new value (same values will not be emitted twice)
      */
-    public Flowable<Weather> scrape$(String deviceId, Duration rate) {
-        // because of backoff-logic, we need to prevent that the timer-emits will stack up
-        AtomicBoolean isWorking = new AtomicBoolean(false);
+    public static Flowable<Weather> scrape$(String deviceId, Duration rate, Scraper scraper) {
         return Observable.interval(0, rate.toMillis(), TimeUnit.MILLISECONDS, Schedulers.io())
-                .filter(aLong -> !isWorking.get())
-                .flatMap(ignored -> {
-                    isWorking.set(true);
-
-                    return Observable.fromSupplier(() -> this.scrape(deviceId))
-                            .doOnComplete(() -> isWorking.set(false))
-                            .subscribeOn(Schedulers.computation());
-                })
+                .concatMap(ignored -> Observable.fromSupplier(() -> scraper.scrape(deviceId))
+                        .subscribeOn(Schedulers.computation())
+                )
+                .onErrorComplete()
                 .distinct(Weather::getRecordedAt)
-                .toFlowable(BackpressureStrategy.DROP);
+                .toFlowable(BackpressureStrategy.BUFFER);
     }
 }

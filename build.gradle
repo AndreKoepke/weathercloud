@@ -37,8 +37,13 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.36'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
+    testImplementation 'org.assertj:assertj-core:3.17.2'
+    testImplementation 'org.mockito:mockito-core:3.5.13'
+
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
     testImplementation 'org.slf4j:slf4j-api:1.7.36'
     testImplementation 'org.slf4j:slf4j-simple:1.7.36'
 
@@ -85,24 +90,6 @@ publishing {
     repositories {
         maven {
             url = layout.buildDirectory.dir('staging-deploy')
-        }
-    }
-}
-
-jreleaser {
-    signing {
-        active = 'ALWAYS'
-        armored = true
-    }
-    deploy {
-        maven {
-            mavenCentral {
-                sonatype {
-                    active = 'ALWAYS'
-                    url = 'https://central.sonatype.com/api/v1/publisher'
-                    stagingRepository('build/staging-deploy')
-                }
-            }
         }
     }
 }
