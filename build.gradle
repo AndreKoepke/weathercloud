@@ -57,7 +57,7 @@ test {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'io.github.andrekoepke'
+            groupId = 'ch.akop.weathercloud'
             artifactId = 'weathercloud'
 
             from components.java
