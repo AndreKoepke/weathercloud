@@ -89,7 +89,11 @@ publishing {
     }
     repositories {
         maven {
+            name = "Github Packages"
             url = uri("https://maven.pkg.github.com/AndreKoepke/weathercloud")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GH_PACKAGES_USER")
+                password = project.findProperty("gpr.key") ?: System.getenv("GH_PACKAGES_TOKE")
         }
     }
 }
