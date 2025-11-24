@@ -92,8 +92,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/AndreKoepke/weathercloud")
             credentials {
-                username = System.getenv("GH_PACKAGES_USER")
-                password = System.getenv("GH_PACKAGES_TOKE")
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
             }
         }
     }
